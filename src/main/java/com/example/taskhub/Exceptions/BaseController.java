@@ -1,5 +1,7 @@
 package com.example.taskhub.Exceptions;
 
+import com.example.taskhub.Exceptions.ContactExceptions.ContactException;
+import com.example.taskhub.Exceptions.ContactExceptions.ContactNotFoundException;
 import com.example.taskhub.Exceptions.ProjectExceptions.ProjectException;
 import com.example.taskhub.Exceptions.ProjectExceptions.ProjectNotFoundException;
 import com.example.taskhub.Exceptions.SubtaskExceptions.SubtaskException;
@@ -93,6 +95,18 @@ public class BaseController {
 
     @ExceptionHandler(TrackingException.class)
     public ResponseEntity<ExceptionsDetails> handleTrackingException(TrackingException exception) {
+        LOG.error(exception.getMessage(), exception);
+        return new ResponseEntity<>(exception.getDetails(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ContactNotFoundException.class)
+    public ResponseEntity<ExceptionsDetails> handleContactNotFoundException(ContactNotFoundException exception) {
+        LOG.error(exception.getMessage(), exception);
+        return new ResponseEntity<>(exception.getDetails(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ContactException.class)
+    public ResponseEntity<ExceptionsDetails> handleContactException(ContactException exception) {
         LOG.error(exception.getMessage(), exception);
         return new ResponseEntity<>(exception.getDetails(), HttpStatus.BAD_REQUEST);
     }
