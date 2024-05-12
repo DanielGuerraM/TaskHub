@@ -1,10 +1,13 @@
 package com.example.taskhub.Contact;
 
 import com.example.taskhub.Contact.DTO.CreateContactDTO;
+import com.example.taskhub.Directory.Directory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -23,6 +26,9 @@ public class Contact {
     private LocalDate updatedAt;
     @JsonIgnore
     private LocalDate deletedAt;
+
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Directory> directory = new ArrayList<>();
 
     public Contact() { }
 

@@ -1,5 +1,10 @@
 package com.example.taskhub.Tracking;
 
+import com.example.taskhub.Exceptions.ProjectExceptions.ProjectException;
+import com.example.taskhub.Exceptions.ProjectExceptions.ProjectNotFoundException;
+import com.example.taskhub.Exceptions.TrackingExceptions.TrackingException;
+import com.example.taskhub.Exceptions.TrackingExceptions.TrackingNotFoundException;
+import com.example.taskhub.Exceptions.UserExceptions.UserNotFoundException;
 import com.example.taskhub.Tracking.DTO.CreateTrackingDTO;
 import com.example.taskhub.Tracking.DTO.UpdateTrackingDTO;
 import com.example.taskhub.Util.ServiceResponse;
@@ -25,12 +30,12 @@ public class TrackingController {
     }
 
     @GetMapping(path = "{idProject}/news/{idTracking}")
-    public ResponseEntity<Object> findTrackingById(@PathVariable("idProject") String idProject, @PathVariable("idTracking") String idTracking) {
+    public ResponseEntity<Object> findTrackingById(@PathVariable("idProject") String idProject, @PathVariable("idTracking") String idTracking) throws ProjectException, ProjectNotFoundException, TrackingException, TrackingNotFoundException {
         return this.trackingService.findSingleTrackingById(idProject, idTracking);
     }
 
     @PostMapping
-    public ResponseEntity<Object> createTracking(@RequestBody @Valid CreateTrackingDTO tracking, BindingResult result) {
+    public ResponseEntity<Object> createTracking(@RequestBody @Valid CreateTrackingDTO tracking, BindingResult result) throws ProjectNotFoundException, UserNotFoundException {
         if(result.hasErrors()) {
             ServiceResponse response = new ServiceResponse();
 
@@ -48,7 +53,7 @@ public class TrackingController {
     public ResponseEntity<Object> updateTracking(@RequestBody @Valid UpdateTrackingDTO tracking,
                                                  @PathVariable("idProject") String idProject,
                                                  @PathVariable("idTracking") String idTracking,
-                                                 BindingResult result) {
+                                                 BindingResult result) throws ProjectNotFoundException, TrackingNotFoundException {
         if(result.hasErrors()) {
             ServiceResponse response = new ServiceResponse();
 
@@ -63,7 +68,7 @@ public class TrackingController {
     }
 
     @DeleteMapping(path = "{idProject}/news/{idTracking}")
-    public ResponseEntity<Object> deleteTracking(@PathVariable("idProject") String idProject, @PathVariable("idTracking") String idTracking) {
+    public ResponseEntity<Object> deleteTracking(@PathVariable("idProject") String idProject, @PathVariable("idTracking") String idTracking) throws ProjectNotFoundException, TrackingNotFoundException {
         return this.trackingService.deleteTracking(idProject, idTracking);
     }
 }

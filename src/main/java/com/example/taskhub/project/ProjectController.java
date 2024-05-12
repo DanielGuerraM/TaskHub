@@ -1,5 +1,6 @@
 package com.example.taskhub.project;
 
+import com.example.taskhub.Util.ServiceResponse;
 import com.example.taskhub.project.DTO.CreateProjectDTO;
 import com.example.taskhub.project.DTO.UpdateProjectDTO;
 import jakarta.validation.Valid;
@@ -29,7 +30,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<Object> createProject(@RequestBody @Valid CreateProjectDTO project, BindingResult result) {
-        ProjectResponse response = new ProjectResponse();
+        ServiceResponse response = new ServiceResponse();
 
         if(result.hasErrors()) {
             response.setSuccess(false);

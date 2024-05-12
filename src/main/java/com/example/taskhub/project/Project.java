@@ -1,6 +1,7 @@
 package com.example.taskhub.project;
 
 import com.example.taskhub.Assignment.Assignment;
+import com.example.taskhub.Directory.Directory;
 import com.example.taskhub.Task.Task;
 import com.example.taskhub.Tracking.Tracking;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -50,6 +51,9 @@ public class Project {
     private List<Task> task = new ArrayList<>();
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tracking> tracking = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private  List<Directory> directory = new ArrayList<>();
     
     public Project() { }
 

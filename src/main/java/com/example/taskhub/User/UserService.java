@@ -8,6 +8,7 @@ import com.example.taskhub.Exceptions.UserExceptions.UserNotFoundException;
 import com.example.taskhub.User.DTO.CreateUserDTO;
 import com.example.taskhub.User.DTO.ResponseUserDTO;
 import com.example.taskhub.User.DTO.UpdateUserDTO;
+import com.example.taskhub.Util.ServiceResponse;
 import com.example.taskhub.project.Project;
 import com.example.taskhub.project.ProjectRepository;
 import org.apache.coyote.Response;
@@ -32,7 +33,7 @@ public class UserService {
     }
 
     public ResponseEntity<Object> findAllUsers() {
-        UserResponse response = new UserResponse();
+        ServiceResponse response = new ServiceResponse();
 
         List<User> users =  this.userRepository.findByDeletedAtIsNull();
 
@@ -62,7 +63,7 @@ public class UserService {
                         new ExceptionsDetails(false, "The user you are trying to find does not exist", null)))
         );
 
-        UserResponse response = new UserResponse();
+        ServiceResponse response = new ServiceResponse();
 
         response.setSuccess(true);
         response.setMessage("The user was successfully found");
@@ -91,7 +92,7 @@ public class UserService {
                     new ExceptionsDetails(false, "There is already a user with the e-mail address " + user.getEmail(), null));
         }
 
-        UserResponse response = new UserResponse();
+        ServiceResponse response = new ServiceResponse();
         User newUser = new User();
 
         BeanUtils.copyProperties(user, newUser);
@@ -128,7 +129,7 @@ public class UserService {
 
         BeanUtils.copyProperties(user, existingUser, "id");
 
-        UserResponse response = new UserResponse();
+        ServiceResponse response = new ServiceResponse();
 
         response.setSuccess(true);
         response.setMessage("User updated successfully");

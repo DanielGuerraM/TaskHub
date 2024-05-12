@@ -2,10 +2,10 @@ package com.example.taskhub.project;
 
 import com.example.taskhub.User.User;
 import com.example.taskhub.User.UserRepository;
+import com.example.taskhub.Util.ServiceResponse;
 import com.example.taskhub.project.DTO.CreateProjectDTO;
 import com.example.taskhub.project.DTO.UpdateProjectDTO;
 import com.example.taskhub.project.enums.ProjectStatus;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +35,7 @@ public class ProjectService {
 
     public ResponseEntity<Object> createProject(CreateProjectDTO project) {
         Optional<Project> existingProject = projectRepository.findProjectByTitle(project.getTitle());
-        ProjectResponse response = new ProjectResponse();
+        ServiceResponse response = new ServiceResponse();
 
         if(existingProject.isPresent()) {
             response.setSuccess(false);
@@ -72,7 +72,7 @@ public class ProjectService {
     }
 
     public ResponseEntity<Object> updateProject(String projectId, UpdateProjectDTO project) {
-        ProjectResponse response = new ProjectResponse();
+        ServiceResponse response = new ServiceResponse();
         Optional<Project> existingProject = projectRepository.findById(projectId);
 
         if(existingProject.isEmpty()) {

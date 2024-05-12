@@ -8,25 +8,19 @@ import com.example.taskhub.Exceptions.UserExceptions.UserNotFoundException;
 import com.example.taskhub.Task.DTO.CreateTaskDTO;
 import com.example.taskhub.Task.DTO.ResponseTaskDTO;
 import com.example.taskhub.Task.DTO.UpdateTaskDTO;
-import com.example.taskhub.Task.Enums.TaskStatus;
 import com.example.taskhub.User.User;
 import com.example.taskhub.User.UserRepository;
-import com.example.taskhub.User.UserResponse;
 import com.example.taskhub.Util.Helpers;
+import com.example.taskhub.Util.ServiceResponse;
 import com.example.taskhub.project.Project;
 import com.example.taskhub.project.ProjectRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -42,8 +36,8 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<Object> findAllTasksByProjectId(String projectId) {
-        UserResponse response = new UserResponse();
+    public ResponseEntity<Object> findAllTasksByProjectId(String projectId) throws ProjectNotFoundException {
+        ServiceResponse response = new ServiceResponse();
 
         Project existigProject = this.projectRepository.findById(projectId).orElseThrow(
                 () -> new ProjectNotFoundException("Project does not exists",
@@ -71,7 +65,7 @@ public class TaskService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> findTaskById(String idProject, String idTask){
+    public ResponseEntity<Object> findTaskById(String idProject, String idTask) throws TaskException, TaskNotFoundException, ProjectNotFoundException {
         if(idProject == null || idProject.isEmpty()) {
             throw new TaskException("The id is null or empty",
                     new ExceptionsDetails(false, "An error occurred while querying the task", null));
@@ -94,7 +88,7 @@ public class TaskService {
 
         Task projectTask = this.taskRepository.findTaskByProject_idAndId(idProject, idTask);
 
-        TaskResponse response = new TaskResponse();
+        ServiceResponse response = new ServiceResponse();
 
         response.setSuccess(true);
         response.setMessage("The project task has been successfully met");
@@ -104,7 +98,7 @@ public class TaskService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> countProjectTask(String idProject) {
+    public ResponseEntity<Object> countProjectTask(String idProject) throws TaskException, ProjectNotFoundException {
         if(idProject == null || idProject.isEmpty()) {
             throw new TaskException("The id is null or empty",
                     new ExceptionsDetails(false, "An error occurred while querying the task", null));
@@ -115,7 +109,7 @@ public class TaskService {
                         new ExceptionsDetails(false, "The project you are trying to find does not exists", null))
         );
 
-        TaskResponse response = new TaskResponse();
+        ServiceResponse response = new ServiceResponse();
 
         response.setSuccess(true);
         response.setMessage(null);
@@ -124,7 +118,7 @@ public class TaskService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> createTask(CreateTaskDTO task) {
+    public ResponseEntity<Object> createTask(CreateTaskDTO task) throws TaskException, ProjectNotFoundException, UserNotFoundException {
         if(task == null) {
             throw new TaskException("The request body is null",
                     new ExceptionsDetails(false, "The information submitted is not valid", null));
@@ -142,7 +136,7 @@ public class TaskService {
 
       Task newTask = new Task(task, existingUser, existingProject);
 
-      TaskResponse response = new TaskResponse();
+      ServiceResponse response = new ServiceResponse();
 
       response.setSuccess(true);
       response.setMessage("Task created successfully");
@@ -155,7 +149,7 @@ public class TaskService {
       return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> updateTask(String idTask, UpdateTaskDTO task){
+    public ResponseEntity<Object> updateTask(String idTask, UpdateTaskDTO task) throws TaskException, TaskNotFoundException {
 
         if(idTask == null || idTask.isEmpty()) {
             throw new TaskException("The id is null or empty",
@@ -174,7 +168,7 @@ public class TaskService {
 
         BeanUtils.copyProperties(task, existingTask, "id");
 
-        TaskResponse response = new TaskResponse();
+        ServiceResponse response = new ServiceResponse();
 
         response.setSuccess(true);
         response.setMessage("Task updated successfully");
@@ -187,7 +181,7 @@ public class TaskService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> deleteTask(String idTask){
+    public ResponseEntity<Object> deleteTask(String idTask) throws TaskException, TaskNotFoundException {
         if(idTask == null || idTask.isEmpty()) {
             throw  new TaskException("The task id is null or empty",
                     new ExceptionsDetails(false, "an error has occurred, the URL parameters are invalid", null));

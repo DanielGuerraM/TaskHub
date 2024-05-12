@@ -6,6 +6,7 @@ import com.example.taskhub.Assignment.DTO.ResponseUserDTO;
 import com.example.taskhub.Assignment.DTO.ResponseUsersDTO;
 import com.example.taskhub.User.User;
 import com.example.taskhub.User.UserRepository;
+import com.example.taskhub.Util.ServiceResponse;
 import com.example.taskhub.project.Project;
 import com.example.taskhub.project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class AssignmentService {
     }
 
     public ResponseEntity<Object> AssignProject(AssignmentDTO assignment) {
-        AssignmentResponse response = new AssignmentResponse();
+        ServiceResponse response = new ServiceResponse();
 
         Optional<User> existingUser = this.userRepository.findById(assignment.getUser_id());
 
@@ -78,7 +79,7 @@ public class AssignmentService {
     }
 
     public ResponseEntity<Object> getAssignment(int page, int size) {
-        AssignmentResponse response = new AssignmentResponse();
+        ServiceResponse response = new ServiceResponse();
 
         response.setSuccess(true);
         response.setData(this.assignmentRespository.findAll());
@@ -87,7 +88,7 @@ public class AssignmentService {
     }
 
     public ResponseEntity<Object> getUsersByProjectId(String projectId) {
-        AssignmentResponse response = new AssignmentResponse();
+        ServiceResponse response = new ServiceResponse();
 
         Optional<Project> existingProject = this.projectRespository.findById(projectId);
 
@@ -100,7 +101,7 @@ public class AssignmentService {
 
         List<Assignment> result = this.assignmentRespository.findByProjectId(projectId);
 
-        ResponseAssignmentDTO assignmentResponse = new ResponseAssignmentDTO();
+        ResponseAssignmentDTO ServiceResponse = new ResponseAssignmentDTO();
 
         List<ResponseUsersDTO> responseUsersDTOList = result.stream().map(assignment -> {
             ResponseUsersDTO responseUsersDTO = new ResponseUsersDTO();
@@ -114,20 +115,20 @@ public class AssignmentService {
             return responseUsersDTO;
         }).collect(Collectors.toList());
 
-        assignmentResponse.setUsers(responseUsersDTOList);
-        assignmentResponse.setProject_id(existingProject.get().getId());
-        assignmentResponse.setProject_title(existingProject.get().getTitle());
-        assignmentResponse.setStatus(existingProject.get().getStatus());
+        ServiceResponse.setUsers(responseUsersDTOList);
+        ServiceResponse.setProject_id(existingProject.get().getId());
+        ServiceResponse.setProject_title(existingProject.get().getTitle());
+        ServiceResponse.setStatus(existingProject.get().getStatus());
 
         response.setSuccess(true);
-        response.setData(assignmentResponse);
+        response.setData(ServiceResponse);
 
         return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<Object> removeAssignment(String assignmentId) {
         Optional<Assignment> existingAssignment = this.assignmentRespository.findById(assignmentId);
-        AssignmentResponse response = new AssignmentResponse();
+        ServiceResponse response = new ServiceResponse();
 
         if(existingAssignment.isEmpty()) {
             response.setSuccess(true);

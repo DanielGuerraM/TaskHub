@@ -34,7 +34,7 @@ public class TrackingService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<Object> findAllTrackingByProjectId(String idProject) {
+    public ResponseEntity<Object> findAllTrackingByProjectId(String idProject) throws TrackingException, TrackingNotFoundException {
         if(idProject == null || idProject.isEmpty()) {
             throw new TrackingException("The id is null or empty",
                     new ExceptionsDetails(false, "An error has occurred with the parameters sent", null));
@@ -64,7 +64,7 @@ public class TrackingService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> findSingleTrackingById(String idProject, String idTracking) {
+    public ResponseEntity<Object> findSingleTrackingById(String idProject, String idTracking) throws ProjectException, TrackingException, ProjectNotFoundException, TrackingNotFoundException {
         if(idProject == null || idProject.isEmpty()) {
             throw new ProjectException("The idProject is null or empty",
                     new ExceptionsDetails(false, "An error has occurred with the parameters sent by the URL", null));
@@ -94,7 +94,7 @@ public class TrackingService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> createTracking(CreateTrackingDTO tracking) {
+    public ResponseEntity<Object> createTracking(CreateTrackingDTO tracking) throws ProjectNotFoundException, UserNotFoundException {
         Project project = this.projectRepository.findProjectByIdAndDeletedAtIsNull(tracking.getProject_id()).orElseThrow(
                 () -> new ProjectNotFoundException("The project does not exist",
                         new ExceptionsDetails(false, "The project you are trying to find does not exist", null))
@@ -118,7 +118,7 @@ public class TrackingService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> updateTracking(String idProject, String idTracking, UpdateTrackingDTO tracking) {
+    public ResponseEntity<Object> updateTracking(String idProject, String idTracking, UpdateTrackingDTO tracking) throws ProjectNotFoundException, TrackingNotFoundException {
         Project existingProject = this.projectRepository.findProjectByIdAndDeletedAtIsNull(idProject).orElseThrow(
                 () -> new ProjectNotFoundException("The project does not exist",
                         new ExceptionsDetails(false, "The project for which you are trying to update the tracking does not exist", null))
@@ -141,7 +141,7 @@ public class TrackingService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Object> deleteTracking(String idProject, String idTracking) {
+    public ResponseEntity<Object> deleteTracking(String idProject, String idTracking) throws ProjectNotFoundException, TrackingNotFoundException {
         Project existingProject = this.projectRepository.findProjectByIdAndDeletedAtIsNull(idProject).orElseThrow(
                 () -> new ProjectNotFoundException("The project does not exist",
                         new ExceptionsDetails(false, "The project for which you are trying to delete the tracking does not exist", null))

@@ -1,6 +1,7 @@
 package com.example.taskhub.Assignment;
 
 import com.example.taskhub.Assignment.DTO.AssignmentDTO;
+import com.example.taskhub.Util.ServiceResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class AssignmentController {
 
     @PostMapping
     public ResponseEntity<Object> assignProject(@RequestBody @Valid AssignmentDTO assignment, BindingResult result) {
-        AssignmentResponse response = new AssignmentResponse();
+        ServiceResponse response = new ServiceResponse();
 
         if(result.hasErrors()) {
             response.setSuccess(false);
