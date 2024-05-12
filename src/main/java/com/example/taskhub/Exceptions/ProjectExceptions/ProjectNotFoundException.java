@@ -2,7 +2,7 @@ package com.example.taskhub.Exceptions.ProjectExceptions;
 
 import com.example.taskhub.Exceptions.ExceptionsDetails;
 
-public class ProjectNotFoundException extends RuntimeException{
+public class ProjectNotFoundException extends Exception{
     private ExceptionsDetails details;
 
     public ProjectNotFoundException(String message, ExceptionsDetails details, Throwable e) {

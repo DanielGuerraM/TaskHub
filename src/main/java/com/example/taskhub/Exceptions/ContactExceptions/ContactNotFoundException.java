@@ -2,7 +2,7 @@ package com.example.taskhub.Exceptions.ContactExceptions;
 
 import com.example.taskhub.Exceptions.ExceptionsDetails;
 
-public class ContactNotFoundException extends RuntimeException {
+public class ContactNotFoundException extends Exception {
     private ExceptionsDetails details;
 
     public ContactNotFoundException(String message, ExceptionsDetails details, Throwable e) {

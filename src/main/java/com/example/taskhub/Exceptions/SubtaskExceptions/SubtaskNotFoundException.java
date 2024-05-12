@@ -2,7 +2,7 @@ package com.example.taskhub.Exceptions.SubtaskExceptions;
 
 import com.example.taskhub.Exceptions.ExceptionsDetails;
 
-public class SubtaskNotFoundException extends RuntimeException {
+public class SubtaskNotFoundException extends Exception {
     private ExceptionsDetails details;
 
     public SubtaskNotFoundException(String message, ExceptionsDetails details, Throwable e) {

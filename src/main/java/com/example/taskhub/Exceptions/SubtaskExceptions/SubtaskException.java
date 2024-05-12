@@ -2,7 +2,7 @@ package com.example.taskhub.Exceptions.SubtaskExceptions;
 
 import com.example.taskhub.Exceptions.ExceptionsDetails;
 
-public class SubtaskException extends RuntimeException {
+public class SubtaskException extends Exception {
     private ExceptionsDetails details;
 
     public SubtaskException(String message, ExceptionsDetails details, Throwable e) {

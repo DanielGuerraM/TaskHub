@@ -2,7 +2,7 @@ package com.example.taskhub.Exceptions.ContactExceptions;
 
 import com.example.taskhub.Exceptions.ExceptionsDetails;
 
-public class ContactException extends RuntimeException {
+public class ContactException extends Exception {
     private ExceptionsDetails details;
 
     public ContactException(String message, ExceptionsDetails details, Throwable e) {

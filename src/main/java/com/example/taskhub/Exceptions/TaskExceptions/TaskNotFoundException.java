@@ -2,7 +2,7 @@ package com.example.taskhub.Exceptions.TaskExceptions;
 
 import com.example.taskhub.Exceptions.ExceptionsDetails;
 
-public class TaskNotFoundException extends RuntimeException {
+public class TaskNotFoundException extends Exception {
     private ExceptionsDetails details;
 
     public TaskNotFoundException(String message, ExceptionsDetails details, Throwable e) {
